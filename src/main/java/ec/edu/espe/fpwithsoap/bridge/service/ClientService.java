@@ -57,13 +57,14 @@ public class ClientService extends WebServiceGatewaySupport {
     }
 
     public String update(ClientSerializer clientSerializer){
-        ClienteActualizarRQ client = new ClienteActualizarRQ();        
+        ClienteActualizarRQ client = new ClienteActualizarRQ();
         client.setNombre(clientSerializer.getNombre());
         client.setApellido(clientSerializer.getApellido());        
         client.setDireccion(clientSerializer.getDireccion());
         
         ActualizarClienteRequest request = new ActualizarClienteRequest();
         request.setClienteRQ(client);
+        request.setCedula(clientSerializer.getCedula());
         
         ActualizarClienteResponse response = (ActualizarClienteResponse) getWebServiceTemplate().marshalSendAndReceive(endpoint, request);
         return response.getStatus();
