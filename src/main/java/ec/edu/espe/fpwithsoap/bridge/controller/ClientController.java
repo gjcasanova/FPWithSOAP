@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 @Slf4j
 @RestController
@@ -41,8 +42,13 @@ public class ClientController {
 
     @GetMapping("/{identityCard}/")
     public ResponseEntity retrieve(@PathVariable String identityCard){
-        // TODO
-        return ResponseEntity.ok().build();
+        log.info("Searching client with identity card: {}", identityCard);
+        try{
+            ClientSerializer response = clientService.retrieve(identityCard);
+            return ResponseEntity.ok(response);
+        }catch(Exception ex){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @PutMapping("/")

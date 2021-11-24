@@ -3,6 +3,8 @@ package ec.edu.espe.fpwithsoap.bridge.service;
 import ec.edu.espe.fpwithsoap.bridge.dto.ClientSerializer;
 import ec.edu.espe.fpwithsoap.bridge.soap.CrearClienteRequest;
 import ec.edu.espe.fpwithsoap.bridge.soap.CrearClienteResponse;
+import ec.edu.espe.fpwithsoap.bridge.soap.BuscarClientePorCedulaRequest;
+import ec.edu.espe.fpwithsoap.bridge.soap.BuscarClientePorCedulaResponse;
 import ec.edu.espe.fpwithsoap.bridge.soap.ClienteRQ;
 import ec.edu.espe.fpwithsoap.bridge.soap.ActualizarClienteRequest;
 import ec.edu.espe.fpwithsoap.bridge.soap.ActualizarClienteResponse;
@@ -25,8 +27,17 @@ public class ClientService extends WebServiceGatewaySupport {
     }
 
     public ClientSerializer retrieve(String identityCard){
-        ClientSerializer clientSerializer = ClientSerializer.builder().build();
-        // TODO
+        ClientSerializer clientSerializer;
+        BuscarClientePorCedulaRequest request = new BuscarClientePorCedulaRequest();
+        request.setCedula(identityCard);
+        BuscarClientePorCedulaResponse response = (BuscarClientePorCedulaResponse) getWebServiceTemplate().marshalSendAndReceive(endpoint, request);
+        clientSerializer = ClientSerializer.builder()
+            .nombre(response.getStatus().getNombre())
+            .apellido(response.getStatus().getApellido())
+            .cedula(response.getStatus().getCedula())
+            .correo(response.getStatus().getCorreo())
+            .direccion(response.getStatus().getDireccion())
+            .build();
         return clientSerializer;
     }
 
