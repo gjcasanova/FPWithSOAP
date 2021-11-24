@@ -10,12 +10,14 @@ import ec.edu.espe.fpwithsoap.bridge.soap.ActualizarClienteRequest;
 import ec.edu.espe.fpwithsoap.bridge.soap.ActualizarClienteResponse;
 import ec.edu.espe.fpwithsoap.bridge.soap.ClienteActualizarRQ;
 import ec.edu.espe.fpwithsoap.bridge.soap.SoapClient;
+import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 @Component("Cliente")
 public class ClientService extends WebServiceGatewaySupport {
@@ -38,6 +40,7 @@ public class ClientService extends WebServiceGatewaySupport {
             .correo(response.getStatus().getCorreo())
             .direccion(response.getStatus().getDireccion())
             .build();
+        log.info("Respuesta de SOAP: {} ", clientSerializer.toString());
         return clientSerializer;
     }
 
@@ -47,12 +50,11 @@ public class ClientService extends WebServiceGatewaySupport {
         client.setNombre(clientSerializer.getNombre());
         client.setApellido(clientSerializer.getApellido());
         client.setCorreo(clientSerializer.getCorreo());
-        client.setDireccion(clientSerializer.getDireccion());
-        
+        client.setDireccion(clientSerializer.getDireccion());        
         CrearClienteRequest request = new CrearClienteRequest();
-        request.setClienteRQ(client);
-        
+        request.setClienteRQ(client);        
         CrearClienteResponse response = (CrearClienteResponse) getWebServiceTemplate().marshalSendAndReceive(endpoint, request);
+        log.info("Respuesta de SOAP: {} ", response.getStatus());
         return response.getStatus();
     }
 
@@ -60,13 +62,12 @@ public class ClientService extends WebServiceGatewaySupport {
         ClienteActualizarRQ client = new ClienteActualizarRQ();
         client.setNombre(clientSerializer.getNombre());
         client.setApellido(clientSerializer.getApellido());        
-        client.setDireccion(clientSerializer.getDireccion());
-        
+        client.setDireccion(clientSerializer.getDireccion());        
         ActualizarClienteRequest request = new ActualizarClienteRequest();
         request.setClienteRQ(client);
-        request.setCedula(clientSerializer.getCedula());
-        
+        request.setCedula(clientSerializer.getCedula());        
         ActualizarClienteResponse response = (ActualizarClienteResponse) getWebServiceTemplate().marshalSendAndReceive(endpoint, request);
+        log.info("Respuesta de SOAP: {} ", response.getStatus());
         return response.getStatus();
     }
 }

@@ -29,20 +29,19 @@ public class ClientController {
     @PostMapping("/")
     public ResponseEntity create(@RequestBody ClientSerializer requestBody){        
         try{
-            log.info("Creatting client: {},{},{},{},{}", requestBody.getCedula(), requestBody.getNombre(), requestBody.getApellido(), requestBody.getCorreo(), requestBody.getDireccion());
-            String message = clientService.create(requestBody);
-            EchoSerializer responseBody = EchoSerializer.builder().message(message).build();            
-            return ResponseEntity.ok(responseBody);                
+            log.info("Creando cliente: {},{},{},{},{}", requestBody.getCedula(), requestBody.getNombre(), requestBody.getApellido(), requestBody.getCorreo(), requestBody.getDireccion());
+            String message = clientService.create(requestBody);                        
+            log.info("{}",message);
+            return ResponseEntity.ok(message);                
         }catch (Exception e){  
-            log.info("Error creatting client: {},{},{},{},{}", requestBody.getCedula(), requestBody.getNombre(), requestBody.getApellido(), requestBody.getCorreo(), requestBody.getDireccion());          
-            EchoSerializer responseBody = EchoSerializer.builder().message(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(responseBody);
+            log.info("Error creando cliente: {},{},{},{},{}", requestBody.getCedula(), requestBody.getNombre(), requestBody.getApellido(), requestBody.getCorreo(), requestBody.getDireccion());                      
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     @GetMapping("/{identityCard}/")
     public ResponseEntity retrieve(@PathVariable String identityCard){
-        log.info("Searching client with identity card: {}", identityCard);
+        log.info("Buscando cliente con C.I.: {}", identityCard);
         try{
             ClientSerializer response = clientService.retrieve(identityCard);
             return ResponseEntity.ok(response);
@@ -54,14 +53,13 @@ public class ClientController {
     @PutMapping("/")
     public ResponseEntity update(@RequestBody ClientSerializer requestBody){
         try{
-            log.info("Updating client: {},{},{},{},{}", requestBody.getCedula(), requestBody.getNombre(), requestBody.getApellido(), requestBody.getCorreo(), requestBody.getDireccion());
+            log.info("Actualizando cliente: {},{},{},{},{}", requestBody.getCedula(), requestBody.getNombre(), requestBody.getApellido(), requestBody.getCorreo(), requestBody.getDireccion());
             String message = clientService.update(requestBody);
-            EchoSerializer responseBody = EchoSerializer.builder().message(message).build();            
-            return ResponseEntity.ok(responseBody);                
+            log.info("{}",message);
+            return ResponseEntity.ok(message);                 
         }catch (Exception e){  
-            log.info("Error updating client: {},{},{},{},{}", requestBody.getCedula(), requestBody.getNombre(), requestBody.getApellido(), requestBody.getCorreo(), requestBody.getDireccion());          
-            EchoSerializer responseBody = EchoSerializer.builder().message(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(responseBody);
+            log.info("Error actualizando cliente: {},{},{},{},{}", requestBody.getCedula(), requestBody.getNombre(), requestBody.getApellido(), requestBody.getCorreo(), requestBody.getDireccion());          
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }
