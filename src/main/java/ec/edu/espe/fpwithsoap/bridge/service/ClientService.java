@@ -4,6 +4,9 @@ import ec.edu.espe.fpwithsoap.bridge.dto.ClientSerializer;
 import ec.edu.espe.fpwithsoap.bridge.soap.CrearClienteRequest;
 import ec.edu.espe.fpwithsoap.bridge.soap.CrearClienteResponse;
 import ec.edu.espe.fpwithsoap.bridge.soap.ClienteRQ;
+import ec.edu.espe.fpwithsoap.bridge.soap.ActualizarClienteRequest;
+import ec.edu.espe.fpwithsoap.bridge.soap.ActualizarClienteResponse;
+import ec.edu.espe.fpwithsoap.bridge.soap.ClienteActualizarRQ;
 import ec.edu.espe.fpwithsoap.bridge.soap.SoapClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -42,7 +45,16 @@ public class ClientService extends WebServiceGatewaySupport {
         return response.getStatus();
     }
 
-    public void update(ClientSerializer clientSerializer){
-        // TODO
+    public String update(ClientSerializer clientSerializer){
+        ClienteActualizarRQ client = new ClienteActualizarRQ();        
+        client.setNombre(clientSerializer.getNombre());
+        client.setApellido(clientSerializer.getApellido());        
+        client.setDireccion(clientSerializer.getDireccion());
+        
+        ActualizarClienteRequest request = new ActualizarClienteRequest();
+        request.setClienteRQ(client);
+        
+        ActualizarClienteResponse response = (ActualizarClienteResponse) getWebServiceTemplate().marshalSendAndReceive(endpoint, request);
+        return response.getStatus();
     }
 }

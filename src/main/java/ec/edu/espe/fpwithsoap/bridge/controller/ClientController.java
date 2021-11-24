@@ -26,11 +26,17 @@ public class ClientController {
     }
 
     @PostMapping("/")
-    public ResponseEntity create(@RequestBody ClientSerializer requestBody){
-        log.info("Creatting client: {}", requestBody.getCedula());
-        String message = clientService.create(requestBody);
-        EchoSerializer responseBody = EchoSerializer.builder().message(message).build();
-        return ResponseEntity.ok(responseBody);                
+    public ResponseEntity create(@RequestBody ClientSerializer requestBody){        
+        try{
+            log.info("Creatting client: {},{},{},{},{}", requestBody.getCedula(), requestBody.getNombre(), requestBody.getApellido(), requestBody.getCorreo(), requestBody.getDireccion());
+            String message = clientService.create(requestBody);
+            EchoSerializer responseBody = EchoSerializer.builder().message(message).build();            
+            return ResponseEntity.ok(responseBody);                
+        }catch (Exception e){  
+            log.info("Error creatting client: {},{},{},{},{}", requestBody.getCedula(), requestBody.getNombre(), requestBody.getApellido(), requestBody.getCorreo(), requestBody.getDireccion());          
+            EchoSerializer responseBody = EchoSerializer.builder().message(e.getMessage()).build();
+            return ResponseEntity.badRequest().body(responseBody);
+        }
     }
 
     @GetMapping("/{identityCard}/")
@@ -41,7 +47,15 @@ public class ClientController {
 
     @PutMapping("/")
     public ResponseEntity update(@RequestBody ClientSerializer requestBody){
-        // TODO
-        return ResponseEntity.ok().build();
+        try{
+            log.info("Updating client: {},{},{},{},{}", requestBody.getCedula(), requestBody.getNombre(), requestBody.getApellido(), requestBody.getCorreo(), requestBody.getDireccion());
+            String message = clientService.update(requestBody);
+            EchoSerializer responseBody = EchoSerializer.builder().message(message).build();            
+            return ResponseEntity.ok(responseBody);                
+        }catch (Exception e){  
+            log.info("Error updating client: {},{},{},{},{}", requestBody.getCedula(), requestBody.getNombre(), requestBody.getApellido(), requestBody.getCorreo(), requestBody.getDireccion());          
+            EchoSerializer responseBody = EchoSerializer.builder().message(e.getMessage()).build();
+            return ResponseEntity.badRequest().body(responseBody);
+        }
     }
 }
