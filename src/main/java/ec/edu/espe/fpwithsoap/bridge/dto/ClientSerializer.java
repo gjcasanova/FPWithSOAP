@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class ClientSerializer {
-    private Long id;
+    //private Long id;
     private String cedula;
     private String nombre;
     private String apellido;

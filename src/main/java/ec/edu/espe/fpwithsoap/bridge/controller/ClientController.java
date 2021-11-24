@@ -5,6 +5,7 @@ import ec.edu.espe.fpwithsoap.bridge.dto.EchoSerializer;
 import ec.edu.espe.fpwithsoap.bridge.service.ClientService;
 import lombok.Data;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +13,9 @@ import org.springframework.web.bind.annotation.*;
 @Data
 @RequestMapping("/api/v1/clients/")
 public class ClientController {
-    @NonNull
-    private final ClientService clientService;
+    
+    @Autowired
+    private ClientService clientService;    
 
     @GetMapping("/echo")
     public ResponseEntity echo(){
@@ -24,8 +26,9 @@ public class ClientController {
 
     @PostMapping("/")
     public ResponseEntity create(@RequestBody ClientSerializer requestBody){
-        // TODO
-        return ResponseEntity.ok().build();
+        String message = clientService.create(requestBody);
+        EchoSerializer responseBody = EchoSerializer.builder().message(message).build();
+        return ResponseEntity.ok(responseBody);
     }
 
     @GetMapping("/{identityCard}/")
