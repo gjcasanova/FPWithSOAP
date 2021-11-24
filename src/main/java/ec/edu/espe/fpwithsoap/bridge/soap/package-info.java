@@ -5,5 +5,5 @@
 // Generated on: 2021.11.23 at 11:09:57 PM PST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://bridge.fpwithsoap/csoap", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@javax.xml.bind.annotation.XmlSchema(namespace = "http://frexofa.op/cliente", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package ec.edu.espe.fpwithsoap.bridge.soap;
